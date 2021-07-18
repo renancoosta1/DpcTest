@@ -1,0 +1,141 @@
+﻿@model IEnumerable<DPCTeste.Domain.Cliente>
+
+@{
+    ViewData["Title"] = "Clientes";
+}
+
+<h1>Clientes</h1>
+
+<hr />
+<div class="align-content-end">
+    <a asp-action="Create" class="btn btn-outline-primary"><i class="fa fa-user-plus"></i></a>
+</div>
+
+<table class="table table-striped tablecenter">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cep)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Estado)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cidade)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Logradouro)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Numero)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Telefone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataNascimento)
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Contato
+            </th>
+            <th class="colunaacao" style="width:18%"> Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                @if (item.AtivoInativo == DPCTeste.Utils.Enums.AtivoInativo.Inativo)
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nome)
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AtivoInativo)
+                    </td>
+                    <td>
+                    </td>
+                }
+
+                else
+
+                {
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Cep)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Estado)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Cidade)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Logradouro)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Numero)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Telefone)
+                    </td>
+                    <td>
+                        @item.DataNascimento.ToString("dd/MM/yyyy")
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AtivoInativo)
+                    </td>
+                    <td>
+                        <a href="@Url.Action("Contato", "Cliente", new {id = item.Id})">
+                            <label class="btn btn-outline-info dpcEditBtn"><i class="fa fa-user"></i></label>
+                        </a>
+                    </td>
+                }
+
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-primary"><i class="fa fa-edit"></i></a>
+
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-secondary"><i class="fa fa-list"></i></a>
+
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger"><i class="fa fa-trash"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<script>
+
+    jQuery(document).ready(function ($) {
+        $(".clickable-row").click(function () {
+            var $buttonClicked = $(this);
+            var id = $buttonClicked.attr('data-id');
+            window.location = "/Cliente/Contato/" + id;
+        });
+    });
+
+</script>

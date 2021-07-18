@@ -1,0 +1,102 @@
+﻿@model DPCTeste.Domain.Cliente
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Cadastrar Cliente</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label>Nome *</label>
+                @Html.TextBoxFor(m => m.Nome, new { @class = "form-control underline-input", autocomplete = "off", placeholder = "Nome", required = "required" })
+            </div>
+            <div class="form-group">
+                <label asp-for="Cep" class="control-label"></label>
+                <div class="input-group">
+                    @Html.TextBoxFor(m => m.Cep, new { @class = "form-control underline-input", autocomplete = "off", placeholder = "Digite seu Cep", required = "required", onkeydown = "javascript: fMasc( this, mCEP);", maxlength = "9" })
+                    <span class="input-group-btn">
+                        <button class="btn btn-default btnBuscar" id="btnBuscarCep" type="button"><i class="fa fa-search"></i></button>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Estado *</label>
+                @Html.TextBoxFor(m => m.Estado, new { @class = "form-control underline-input", autocomplete = "off", placeholder = "Estado", required = "required" })
+            </div>
+            <div class="form-group">
+                <label>Cidade *</label>
+                @Html.TextBoxFor(m => m.Cidade, new { @class = "form-control underline-input", autocomplete = "off", placeholder = "Cidade", required = "required" })
+            </div>
+            <div class="form-group">
+                <label>Logradouro *</label>
+                @Html.TextBoxFor(m => m.Logradouro, new { @class = "form-control underline-input", autocomplete = "off", placeholder = "Logradouro", required = "required" })
+            </div>
+            <div class="form-group">
+                <label>Número *</label>
+                @Html.TextBoxFor(m => m.Numero, new { @class = "form-control underline-input", autocomplete = "off", placeholder = "Número", required = "required" })
+            </div>
+            <div class="form-group">
+                <label>Telefone *</label>
+                @Html.TextBoxFor(m => m.Telefone, new { @class = "form-control underline-input", autocomplete = "off", placeholder = "Telefone", required = "required", onkeydown = "javascript: fMasc( this, mTel );" })
+            </div>
+            <div class="form-group">
+                <label>Data Nascimento*</label>
+                @Html.TextBoxFor(m => m.DataNascimento, new { @class = "form-control underline-input datepicker", autocomplete = "off", placeholder = "Data", required = "required" })
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Criar" class="btn btn-greensea" />
+                <a asp-action="Index" class="btn btn-primary">Voltar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Styles {
+}
+
+@section Scripts {
+
+}
+
+<script>
+
+    $("#btnBuscarCep").click(function () {
+       
+        $.ajax({           
+            url: 'https://viacep.com.br/ws/' + $('#Cep').val() + '/json/unicode/',        
+            dataType: 'json',          
+            success: function (resposta) {
+                toastr["success"]("Cep encontrado!");          
+                $("#Logradouro").val(resposta.logradouro);
+                $("#Cidade").val(resposta.localidade);
+                $("#Estado").val(resposta.uf);              
+                $("#Numero").focus();
+            },
+            error: function () {
+                toastr["warning"]("Cep não encontrado!")
+            }
+        });
+    });
+
+    $(".datepicker").datepicker({
+        defaultDate: "getDate()",
+        format: 'dd/mm/yyyy',
+        dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'],
+        dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S', 'D'],
+        dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
+        monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+        monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+        changeMonth: false,
+        numberOfMonths: 1,
+        minDate: 0
+    }).datepicker("setDate", new Date()
+    );
+
+</script>
